@@ -11,6 +11,8 @@ export async function createPost(formData){
 
     const user_id = (await auth0.getSession()).user.user_id;
 
+    console.log(user_id);
+
     const { url } = await put(
         'media', 
         formData.get("media"), 
@@ -42,3 +44,20 @@ export async function removeLike(post_id, user_id){
         WHERE post_id = ${post_id} AND user_id = ${user_id}
     `
 }
+
+
+
+
+  
+
+  export async function addComment(formData) {
+    const user_id = (await auth0.getSession()).user.user_id;
+    const content = formData.get('content');
+    const post_id = formData.get('post_id');
+
+    await sql`INSERT INTO sa_comments(post_id, user_id, content) VALUES (
+      ${post_id},  
+      ${user_id},
+      ${content}
+  )`
+  }

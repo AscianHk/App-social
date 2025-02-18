@@ -1,11 +1,11 @@
-import Post from "./post"
+import PostShort from "./post-short"
 
 export default async ({posts, user_id, likes}) => {
 
     return (
         <div className="flex flex-col grow items-center gap-16">
             { 
-                posts.map(post => (<Post 
+                posts.map(post => (<PostShort 
 
                     key={post.post_id} 
 

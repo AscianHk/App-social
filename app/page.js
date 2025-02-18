@@ -9,6 +9,8 @@ export default async function Home() {
   const posts = await getPosts();    
   const likes = await getLikes(user_id);
 
+  console.log(posts)
+
 
   return <PostList user_id={user_id} posts={posts} likes={likes} />
 }
