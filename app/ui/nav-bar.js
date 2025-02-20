@@ -9,7 +9,7 @@ export default () => {
     
     return (
         <nav className="flex flex-col gap-4 h-dvh border-e p-4 pr-8 fixed" >
-            <p className='hidden sm:block text-xl italic'>SocialApp</p>
+            <p className='hidden sm:block text-xl italic'>AppSocial</p>
             
             <NavLink ruta="/" texto="Home" icon={ HomeIcon }></NavLink>
             <NavLink ruta="/search" texto="Search" icon={MagnifyingGlassIcon}></NavLink>

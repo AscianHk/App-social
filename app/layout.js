@@ -26,9 +26,8 @@ export default async function RootLayout({ children }) {
   if (!session) {
     return (
       <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col gap-4 p-8`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col items-center gap-4 p-8`}>
         <Landing />
-        <p><a href="/auth/login" className="rounded bg-teal-800 p-2">Log in</a></p>
       </body>
       </html>
     )
