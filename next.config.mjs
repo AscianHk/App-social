@@ -2,7 +2,7 @@
 const nextConfig = {
     images: {
         domains: [
-            'y7ytydp82zydixlc.public.blob.vercel-storage.com',
+            'ous6ai2dyfxglbes.public.blob.vercel-storage.com',
             's.gravatar.com',
             'lh3.googleusercontent.com'
         ]

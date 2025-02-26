@@ -47,13 +47,17 @@ export default ({
             <p><span className="font-bold">{post.username}</span> {post.content}</p>
            </div>
            
-           <div>
-            {
-                comments.map((comment) => (
-                    <p key={comment.comment_id}>{comment.content}</p>
-                ))
-            }
-            </div>
+           <div className="space-y-2">
+    {
+        comments.map((comment) => (
+            <p key={comment.comment_id}>
+                <span className="font-semibold">{comment.username}</span>
+                <span className="mx-1">:</span>
+                <span>{comment.content}</span>
+            </p>
+        ))
+    }
+</div>
            <form action={addComment}>
             <input type="hidden" name="post_id" value={post.post_id} />
              <input name="content" className="w-full outline-0 dark:bg-neutral-950" type="text" placeholder="Add comment" />
