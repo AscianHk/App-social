@@ -1,16 +1,26 @@
+'use client';
+
+
+import LikesPopup from './likes-popup'
 import { ChatBubbleLeftIcon, HeartIcon } from "@heroicons/react/24/solid"
 import Image from "next/image"
 import Link from "next/link"
 import LikeButton from "./like-button"
 import { addComment } from "../lib/actions"
+import CommentPopup from './comment-popup'
+import { useState } from 'react'
 
 export default ({
     user_id, 
     post,
     isLikedInitial,
-    comments
+    comments,
+    likesList
     
 }) => {
+    
+    const [isCommentPopupOpen, setIsCommentPopupOpen] = useState(false);
+
 
     return (
         <div className="flex flex-col max-w-sm gap-2">
@@ -37,11 +47,22 @@ export default ({
            </div>
 
            <div>
+           <div>
                 <div className="flex gap-2">
                     <LikeButton post_id={post.post_id} user_id={user_id} isLikedInitial={isLikedInitial} />
-                    <ChatBubbleLeftIcon className="w-8" />
+                    <ChatBubbleLeftIcon 
+                        className="w-8 cursor-pointer bg-black hover:text-gray-600" 
+                        onClick={() => setIsCommentPopupOpen(true)}
+                    />
                 </div>
-                <span>{post.num_likes} Me gusta</span>
+                <LikesPopup numLikes={post.num_likes} likesList={likesList} />
+            </div>
+            <CommentPopup 
+                isOpen={isCommentPopupOpen}
+                onClose={() => setIsCommentPopupOpen(false)}
+                post_id={post.post_id}
+                comments={comments}
+            />
            </div>
            <div>
             <p><span className="font-bold">{post.username}</span> {post.content}</p>

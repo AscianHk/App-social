@@ -15,9 +15,14 @@ const SearchPage = () => {
                 setLoading(true);
                 try {
                     const response = await fetch(`/api/search?term=${encodeURIComponent(searchTerm)}`);
+                    console.log('Response status:', response.status); // Debug
+                    
                     if (response.ok) {
                         const data = await response.json();
+                        console.log('Search results:', data); // Debug
                         setUsers(data);
+                    } else {
+                        console.error('Response not OK:', await response.text());
                     }
                 } catch (error) {
                     console.error('Error searching:', error);
@@ -25,8 +30,7 @@ const SearchPage = () => {
                     setLoading(false);
                 }
             };
-
-            // Debounce para evitar demasiadas peticiones
+    
             const timeoutId = setTimeout(searchUsers, 300);
             return () => clearTimeout(timeoutId);
         } else {
@@ -35,8 +39,7 @@ const SearchPage = () => {
     }, [searchTerm]);
 
     return (
-        <div className="w-full max-w-5xl mx-auto p-6">
-            {/* Barra de búsqueda */}
+        <div className="w-full max-w-5xl mx-auto p-6" >
             <input 
                 type="text" 
                 placeholder="Buscar usuarios..." 
@@ -44,8 +47,6 @@ const SearchPage = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full p-3 mb-6 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
             />
-
-            {/* Estado de carga */}
             {loading ? (
                 <div className="text-center p-4">
                     <p>Buscando...</p>
@@ -54,7 +55,6 @@ const SearchPage = () => {
                 <div className="space-y-8">
                     {users.map(user => (
                         <div key={user.user_id} className="border rounded-lg p-4">
-                            {/* Información del usuario */}
                             <div className="flex items-center gap-3 mb-4">
                                 <Image 
                                     src={user.picture || '/default-avatar.png'}
@@ -66,7 +66,6 @@ const SearchPage = () => {
                                 <span className="font-semibold">{user.username}</span>
                             </div>
 
-                            {/* Grid de posts del usuario */}
                             <div className="grid grid-cols-3 gap-2">
                                 {user.posts && user.posts.map(post => (
                                     <Link href={`/post/${post.post_id}`} key={post.post_id}>

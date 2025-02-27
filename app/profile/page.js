@@ -9,11 +9,14 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [view, setView] = useState("posts");
 
   useEffect(() => {
     if (user) {
       setProfileImage(user.picture); 
       fetchUserPosts();
+      fetchUserLikes();
     }
   }, [user]);
 
@@ -23,10 +26,18 @@ export default function ProfilePage() {
   const username = user.nickname || "Usuario Anónimo";
 
   const fetchUserPosts = async () => {
-    const response = await fetch(`/api/getUserPosts?email=${user.email}`);
+    const response = await fetch(`/api/getUserPosts?email=${encodeURIComponent(user.email)}`);
     if (response.ok) {
       const data = await response.json();
       setPosts(data.posts);
+    }
+  };
+
+  const fetchUserLikes = async () => {
+    const response = await fetch(`/api/getUserLikes?email=${encodeURIComponent(user.email)}`);
+    if (response.ok) {
+      const data = await response.json();
+      setLikes(data.likes);
     }
   };
 
@@ -79,20 +90,54 @@ export default function ProfilePage() {
 
       {uploading && <p className="text-sm text-blue-500">Subiendo imagen...</p>}
 
-      
-      <h3 className="text-lg font-semibold text-white-800 text-center mt-8">Tus Publicaciones</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <div key={post.id} className="p-4 border rounded-lg shadow-md bg-gray-100">
-              <h4 className="font-bold text-white-700">{post.title}</h4>
-              <p className="text-gray-600 text-sm mt-1">{post.content}</p>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500 text-center col-span-full">Aún no has publicado nada.</p>
-        )}
+      <div className="flex justify-center gap-4 mt-4">
+        <button
+          className={`px-4 py-2 rounded ${view === "posts" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+          onClick={() => setView("posts")}
+        >
+          Ver Publicaciones
+        </button>
+        <button
+          className={`px-4 py-2 rounded ${view === "likes" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"}`}
+          onClick={() => setView("likes")}
+        >
+          Ver Likes
+        </button>
       </div>
+
+      {view === "posts" ? (
+        <>
+          <h3 className="text-lg font-semibold text-white-800 text-center mt-8">Tus Publicaciones</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <div key={post.id} className="p-4 border rounded-lg shadow-md bg-gray-100">
+                  <h4 className="font-bold text-white-700">{post.title}</h4>
+                  <p className="text-gray-600 text-sm mt-1">{post.content}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center col-span-full">Aún no has publicado nada.</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <>
+          <h3 className="text-lg font-semibold text-white-800 text-center mt-8">Tus Likes</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+            {likes.length > 0 ? (
+              likes.map((like) => (
+                <div key={like.id} className="p-4 border rounded-lg shadow-md bg-gray-100">
+                  <h4 className="font-bold text-white-700">{like.title}</h4>
+                  <p className="text-gray-600 text-sm mt-1">{like.content}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-center col-span-full">Aún no has dado like a nada.</p>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

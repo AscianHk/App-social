@@ -44,6 +44,15 @@ export async function removeLike(post_id, user_id){
         WHERE post_id = ${post_id} AND user_id = ${user_id}
     `
 }
+export async function getLikesList(post_id) {
+    const { rows } = await sql`
+      SELECT sa_users.user_id, sa_users.username
+      FROM sa_likes 
+      JOIN sa_users ON sa_likes.user_id = sa_users.user_id
+      WHERE sa_likes.post_id = ${post_id}
+    `;
+    return rows;
+}
 
 
 
