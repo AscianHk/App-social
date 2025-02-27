@@ -26,7 +26,6 @@ const SearchPage = () => {
                 }
             };
 
-            // Debounce para evitar demasiadas peticiones
             const timeoutId = setTimeout(searchUsers, 300);
             return () => clearTimeout(timeoutId);
         } else {
@@ -36,28 +35,23 @@ const SearchPage = () => {
 
     return (
         <div className="w-full max-w-5xl mx-auto p-6">
-            {/* Barra de búsqueda */}
             <input 
-                type="text" 
-                placeholder="Buscar usuarios..." 
+                type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full p-3 mb-6 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500"
+                placeholder="Buscar usuarios..."
+                className="w-full p-3 rounded-lg border border-gray-300 mb-6"
             />
 
-            {/* Estado de carga */}
             {loading ? (
-                <div className="text-center p-4">
-                    <p>Buscando...</p>
-                </div>
+                <div className="text-center">Buscando...</div>
             ) : (
                 <div className="space-y-8">
                     {users.map(user => (
                         <div key={user.user_id} className="border rounded-lg p-4">
-                            {/* Información del usuario */}
                             <div className="flex items-center gap-3 mb-4">
                                 <Image 
-                                    src={user.picture || '/default-avatar.png'}
+                                    src={user.picture || "/default-avatar.png"}
                                     alt={user.username}
                                     width={40}
                                     height={40}
@@ -66,7 +60,6 @@ const SearchPage = () => {
                                 <span className="font-semibold">{user.username}</span>
                             </div>
 
-                            {/* Grid de posts del usuario */}
                             <div className="grid grid-cols-3 gap-2">
                                 {user.posts && user.posts.map(post => (
                                     <Link href={`/post/${post.post_id}`} key={post.post_id}>
@@ -85,9 +78,9 @@ const SearchPage = () => {
                     ))}
 
                     {searchTerm && users.length === 0 && (
-                        <div className="text-center p-8">
-                            <p className="text-gray-500">No se encontraron usuarios.</p>
-                        </div>
+                        <p className="text-center text-gray-500">
+                            No se encontraron usuarios.
+                        </p>
                     )}
                 </div>
             )}
